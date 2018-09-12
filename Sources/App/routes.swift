@@ -9,7 +9,12 @@ public func routes(_ router: Router) throws {
 
     // Example of configuring a controller
     let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    let todos = router.grouped("todos")
+    let todo = todos.grouped(Todo.parameter)
+    todos.get(use: todoController.index)
+    todo.get(use: todoController.view)
+    todos.post(use: todoController.create)
+    todo.patch(use: todoController.update)
+    todo.delete(use: todoController.delete)
+    todos.delete(use: todoController.clear)
 }
